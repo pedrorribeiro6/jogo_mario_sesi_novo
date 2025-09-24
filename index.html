@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Jogo do Mario - SESI|SENAI</title>
+    <link rel="stylecheet" href="css/style.css">
+    <!-- <link rel="shortcut icon" href=""> colocar depois -->
+</head>
+
+<body>
+    <div class="game-board">
+        <div class="tela-Inicial">
+            <img src="imagens/logoSenai.png" alt="Logo do Senai" width="350px">
+            <h1>Super Jogo do Mario</h1>
+            <button id="start-buttom">Iniciar Jogo</button>
+
+            <div id="escolha-Personagem">
+                <div id="marioDiv" class="divPersonagem" value="mario" onclick="escolhaPersonagem('mario')">
+                <img src="media/mario.gif" alt="" class="personagemEscolha">
+                <p>Mario</p>
+                </div>
+                <div id="gokuDiv" class="divPersonagem" value="goku" onclick="escolhaPersonagem('goku')">
+                <img src="media/goku.gif" alt="" class="personagemEscolha">
+                <p>Goku</p>
+                </div>
+                <div id="megamanDiv" class="divPersonagem" value="megaman" onclick="escolhaPersonagem('megaman')">
+                <img src="media/yd6sCid.gif" alt="" class="personagemEscolha">
+                <p>megaman</p>
+                </div>
+                <div id="sonicDiv" class="divPersonagem" value="sonic" onclick="escolhaPersonagem('sonic')">
+                <img src="media/sonic.gif" alt="" class="personagemEscolha">
+                <p>Mario</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
