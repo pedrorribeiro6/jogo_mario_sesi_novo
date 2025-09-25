@@ -1,0 +1,671 @@
+:root {
+    --fonte: "Press Start 2P", system-ui;
+    /* Fonte principal do jogo */
+    --velocidade: 2s;
+    /* Velocidade base para animações de obstáculos */
+}
+
+/* =========================================
+   ESTILOS GLOBAIS E RESET
+   =========================================
+   Estilos aplicados ao corpo do documento e
+   um reset básico para remover margens e
+   preenchimentos padrão dos navegadores.
+*/
+body {
+    background-color: rgb(150, 84, 8);
+    /* Cor de fundo geral do corpo */
+}
+
+* {
+    margin: 0;
+    /* Remove margem padrão */
+    padding: 0;
+    /* Remove preenchimento padrão */
+    box-sizing: border-box;
+    /* Garante que padding e border sejam incluídos na largura/altura */
+}
+
+/* Classe para garantir a aplicação da fonte específica */
+.press-start-2p-regular {
+    font-family: "Press Start 2P", system-ui;
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* =========================================
+   ESTILOS DO TABULEIRO DE JOGO (GAME BOARD)
+   =========================================
+   Define o contêiner principal do jogo,
+   incluindo tamanho, borda do "chão" e
+   o gradiente de fundo inicial do céu.
+*/
+.game-board {
+    width: 100%;
+    height: 90vh;
+    /* Ocupa 90% da altura da viewport */
+    border-bottom: 15px solid rgb(35, 160, 35);
+    /* Borda verde representando o chão */
+    margin: 0 auto;
+    /* Centraliza horizontalmente */
+    position: relative;
+    /* Para posicionamento absoluto dos filhos */
+    overflow: hidden;
+    /* Esconde elementos que saem dos limites */
+    background: linear-gradient(#87ceeb, #e0f6ff);
+    /* Gradiente de céu azul */
+}
+
+/* =========================================
+   ESTILOS DOS OBSTÁCULOS E PERSONAGEM
+   =========================================
+   Define a aparência e animação do cano,
+   bullet e Mario.
+*/
+.pipe {
+    position: absolute;
+    bottom: 0;
+    /* Alinha na parte inferior */
+    width: 80px;
+    animation: pipe-animation var(--velocidade) infinite linear;
+    /* Animação de movimento */
+    animation-play-state: paused;
+    /* Começa pausado */
+    z-index: 1;
+    /* Garante que fique acima do fundo */
+}
+
+.bullet {
+    position: absolute;
+    bottom: 20px;
+    /* Acima do chão */
+    width: 80px;
+    animation: bullet-animation 1.5s infinite linear;
+    /* Animação de movimento */
+    animation-play-state: paused;
+    /* Começa pausado */
+    display: none;
+    /* Escondido inicialmente */
+}
+
+.mario {
+    width: 150px;
+    position: absolute;
+    bottom: 0;
+    /* No chão */
+    z-index: 1;
+    /* Acima do fundo */
+}
+
+.jump {
+    animation: jump-animation 500ms ease-in-out;
+    /* Animação de pulo */
+}
+
+.clouds {
+    position: absolute;
+    width: 600px;
+    animation: clouds-animation 10s infinite linear;
+    /* Animação de movimento das nuvens */
+    z-index: 1;
+    /* Acima do fundo */
+}
+
+/* =========================================
+   ESTILOS DA INTERFACE DO USUÁRIO (HUD)
+   =========================================
+   Estiliza a exibição da pontuação e das vidas
+   no canto superior da tela.
+*/
+.score-container {
+    font-family: "Press Start 2P", system-ui;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: white;
+    font-size: 1.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    z-index: 10;
+    /* Fica acima de muitos elementos */
+    display: flex;
+    gap: 20px;
+    /* Espaço entre score e vidas */
+}
+
+/* =========================================
+   TELAS DE FEEDBACK (GAME OVER / CONTINUAR)
+   =========================================
+   Estiliza as telas que aparecem ao perder
+   o jogo ou uma vida.
+*/
+.game-over-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.75);
+    /* Fundo semi-transparente */
+    color: white;
+    font-family: var(--fonte);
+    z-index: 20;
+    /* Fica acima do jogo */
+    display: none;
+    /* Escondida inicialmente */
+}
+
+.game-over-screen h2 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: #F8333C;
+    text-shadow: 3px 3px 0px black;
+}
+
+.game-over-screen p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+.tela-jogar-denovo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.75);
+    color: white;
+    font-family: var(--fonte);
+    z-index: 20;
+    display: none;
+    /* Escondida inicialmente */
+}
+
+.tela-jogar-denovo h2 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: #F8333C;
+    text-shadow: 3px 3px 0px black;
+}
+
+.tela-jogar-denovo p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+.tela-jogar-denovo button {
+    padding: 15px 30px;
+    font-size: 1rem;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: var(--fonte);
+    /* Corrigido de --game-font para --fonte */
+    box-shadow: 0 4px #2a6f43;
+    margin-right: 5px;
+    transition: all 0.1s ease-in-out;
+}
+
+#restart-button {
+    padding: 15px 30px;
+    font-size: 1rem;
+    color: white;
+    background-color: #44AF69;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: var(--fonte);
+    /* Corrigido de --game-font para --fonte */
+    transition: all 0.1s ease-in-out;
+}
+
+#restart-button:hover {
+    background-color: #3e9e5f;
+}
+
+#restart-button:active {
+    transform: translateY(4px);
+    box-shadow: none;
+}
+
+/* =========================================
+   ESTILOS DOS ÍCONES DE VIDA
+   =========================================
+   Define como os ícones de vida são exibidos.
+*/
+#lives-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    /* Espaço entre os ícones */
+}
+
+.life-icon {
+    width: 30px;
+    height: 30px;
+}
+
+/* =========================================
+   ESTILO DA TELA DE INÍCIO (NICKNAME)
+   =========================================
+   Estiliza a tela onde o jogador insere
+   seu nickname antes de começar o jogo.
+*/
+.tela-Inicial {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    /* Visível após a tela de startup */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.75);
+    color: white;
+    font-family: var(--fonte);
+    z-index: 30;
+    /* Fica acima da tela de Game Over */
+    text-align: center;
+}
+
+.tela-Inicial h1 {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    color: #f7d51d;
+    text-shadow: 3px 3px 0px #e15f00;
+}
+
+.tela-Inicial label {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.tela-Inicial input {
+    padding: 10px;
+    font-size: 1.2rem;
+    margin-bottom: 25px;
+    border: 3px solid white;
+    background-color: #333;
+    color: white;
+    font-family: var(--fonte);
+    text-align: center;
+}
+
+#start-button {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    color: white;
+    background-color: #28a745;
+    border: none;
+    cursor: pointer;
+    font-family: var(--fonte);
+    /* Corrigido de monospace para --fonte */
+    border-radius: 5px;
+}
+
+/* =========================================
+   ESTILOS DE SELEÇÃO DE PERSONAGEM
+   =========================================
+   Define a aparência do menu de seleção
+   de personagens.
+*/
+#escolha-Personagem {
+    font-size: 1.2rem;
+    margin-top: 25px;
+    background-color: #333;
+    color: white;
+    font-family: var(--fonte);
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+}
+
+/* Estilo para a tela de continuar/reiniciar, parece uma duplicação. */
+/* #Continuar-Reniciar é um ID de um elemento não definido neste CSS */
+#Continuar-Reniciar {
+    font-size: 1.2rem;
+    margin-top: 25px;
+    background-color: #333;
+    color: white;
+    font-family: var(--fonte);
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+}
+
+
+.personagemEscolha {
+    width: 125px;
+    height: 125px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+/* Estilo para a div que contém o personagem (provavelmente para a borda de seleção) */
+#divPersonagem {
+    /* Este ID parece ser para um elemento singular, mas é usado para 'divPersonagem' que é uma classe */
+    border: 3px solid white;
+    width: 100%;
+}
+
+/* =========================================
+   ESTILOS DE ESTADO DO JOGO E PERSONAGEM
+   =========================================
+   Classes que mudam a aparência do jogo
+   ou do Mario em certas situações.
+*/
+.game-started .pipe {
+    animation-play-state: running;
+    /* Inicia a animação do cano quando o jogo começa */
+}
+
+/* Contêiner para o botão de ranking */
+.rank-button-container {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.rank-button {
+    display: inline-block;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    font-family: var(--fonte);
+    /* Usando a fonte global */
+    color: white;
+    background-color: #007bff;
+    border: 3px solid #0056b3;
+    border-radius: 8px;
+    text-decoration: none;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+    transition: background-color 0.2s ease;
+}
+
+.rank-button:hover {
+    background-color: #0056b3;
+}
+
+.mario.invuneravel {
+    animation: piscar 0.2s infinite alternate;
+    /* Animação de piscar para invulnerabilidade */
+}
+
+/* Estilo de seleção para a div do personagem */
+.divPersonagem.selecionado {
+    border: 3px solid #4CAF50;
+    /* Borda verde */
+    box-shadow: 0 0 15px #4CAF50;
+    /* Sombra verde */
+}
+
+.divPersonagem {
+    border: 3px solid white;
+    /* Borda padrão */
+    width: 100%;
+}
+
+/* =========================================
+   ESTILOS DE MOEDAS
+   =========================================
+   Define a aparência e animação das moedas.
+*/
+.coin {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    z-index: 15;
+    /* Fica acima do tabuleiro */
+    animation: pipe-animation var(--velocidade) infinite linear;
+    /* Usa a mesma animação do cano */
+}
+
+/* =========================================
+   ESTILOS DE TEMAS/FASES
+   =========================================
+   Classes para alterar o fundo e efeitos
+   visuais do jogo conforme a pontuação avança.
+*/
+.theme-tarde {
+    background: linear-gradient(#ffdd66, #ff8c00, #a033a0);
+    /* Gradiente de pôr do sol */
+    position: relative;
+}
+
+.theme-noite {
+    background: linear-gradient(#0a0a40, #000000);
+    /* Gradiente de céu noturno */
+    position: relative;
+}
+
+.theme-infernal {
+    background: linear-gradient(#770404, #fc0303, #e95906, #e95906c7);
+    /* Gradiente de inferno */
+}
+
+#inferno-background {
+    position: absolute;
+    bottom: 15px;
+    /* Alinha com o chão */
+    left: 0;
+    width: 100%;
+    height: 200px;
+    background-image: url('../_imagens/teste2.png') !important;
+    /* Fundo de rochas */
+    background-repeat: repeat-x;
+    z-index: 1;
+    display: none;
+    /* Escondido inicialmente */
+}
+
+/* Efeitos adicionais para os temas */
+.theme-tarde::before,
+.theme-noite::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.2) 1px, transparent 1px);
+    /* Efeito de grão/estrelas sutis */
+    background-size: 50px 50px;
+    opacity: 0.5;
+    z-index: 0;
+}
+
+.theme-tarde::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background: radial-gradient(ellipse at bottom, rgba(255, 200, 0, 0.3) 0%, transparent 70%);
+    /* Brilho do sol poente */
+    z-index: 1;
+}
+
+.theme-tarde .clouds {
+    filter: brightness(0.8) hue-rotate(-10deg);
+    /* Ajusta a cor das nuvens para o tema tarde */
+}
+
+.theme-noite .clouds,
+.theme-infernal .clouds {
+    filter: brightness(0.5);
+    /* Escurece as nuvens para noite/inferno */
+}
+
+#star-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../_imagens/teste.png');
+    /* Imagem de estrelas */
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: 0;
+    display: none;
+    /* Escondido inicialmente */
+    animation: brilha-estrela-animation-tarde 5s infinite linear;
+    /* Animação padrão para estrelas */
+}
+
+.ember {
+    position: absolute;
+    bottom: -10px;
+    /* Começa abaixo da tela */
+    width: 5px;
+    height: 5px;
+    background-color: #e60808;
+    border-radius: 50%;
+    animation: rise-and-fade 3s linear infinite;
+    /* Animação de brasa subindo */
+    z-index: 50;
+    /* Acima de muitos elementos */
+}
+
+.tremer {
+    animation: tremer-tela 0.2s linear infinite;
+    /* Animação de tremor de tela */
+}
+
+/* =========================================
+   KEYFRAMES (ANIMAÇÕES CSS)
+   =========================================
+   Define as animações usadas pelos elementos
+   do jogo.
+*/
+@keyframes tremer-tela {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-2px);
+    }
+
+    50% {
+        transform: translateX(2px);
+    }
+
+    75% {
+        transform: translateX(-2px);
+    }
+}
+
+@keyframes pipe-animation {
+    from {
+        right: -80px;
+    }
+
+    to {
+        right: 100%;
+    }
+}
+
+@keyframes bullet-animation {
+    from {
+        right: -80px;
+    }
+
+    to {
+        right: 100%;
+    }
+}
+
+@keyframes jump-animation {
+    0% {
+        bottom: 0;
+    }
+
+    40% {
+        bottom: 180px;
+    }
+
+    50% {
+        bottom: 180px;
+    }
+
+    70% {
+        bottom: 130px;
+    }
+
+    100% {
+        bottom: 0;
+    }
+}
+
+@keyframes clouds-animation {
+    from {
+        right: -550px;
+    }
+
+    to {
+        right: 100%;
+    }
+}
+
+@keyframes piscar {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0.3;
+    }
+
+    /* Pisca alterando a opacidade */
+}
+
+@keyframes brilha-estrela-animation {
+    0% {
+        opacity: 0.1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 0.1;
+    }
+}
+
+@keyframes brilha-estrela-animation-tarde {
+    0% {
+        opacity: 0.1;
+    }
+
+    50% {
+        opacity: 0.2;
+    }
+
+    100% {
+        opacity: 0.1;
+    }
+}
+
+@keyframes rise-and-fade {
+    to {
+        bottom: 100%;
+        /* Sobe até o topo da tela */
+        opacity: 0;
+        /* Desaparece */
+        transform: scale(0.5);
+        /* Diminui de tamanho */
+    }
+}
